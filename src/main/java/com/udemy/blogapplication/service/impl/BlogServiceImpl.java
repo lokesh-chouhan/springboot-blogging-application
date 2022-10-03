@@ -4,6 +4,9 @@ import com.udemy.blogapplication.dto.BlogDto;
 import com.udemy.blogapplication.exception.ResourceNotFoundException;
 import com.udemy.blogapplication.repository.BlogRepository;
 import com.udemy.blogapplication.service.BlogService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,11 +29,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public List<BlogDto> getAllBlogs() {
-
-        
-
-        return blogRepository.findAll().stream().map(blog -> entityToDto(blog)).collect(Collectors.toList());
+    public List<BlogDto> getAllBlogs(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Page<Blog> blogs = blogRepository.findAll(pageable);
+        List<Blog> listBlogs = blogs.getContent();
+        return listBlogs.stream().map(blog -> entityToDto(blog)).collect(Collectors.toList());
     }
 
     @Override
