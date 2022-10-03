@@ -1,6 +1,7 @@
 package com.udemy.blogapplication.service.impl;
 import com.udemy.blogapplication.entity.Blog;
-import com.udemy.blogapplication.payload.BlogDto;
+import com.udemy.blogapplication.dto.BlogDto;
+import com.udemy.blogapplication.exception.ResourceNotFoundException;
 import com.udemy.blogapplication.repository.BlogRepository;
 import com.udemy.blogapplication.service.BlogService;
 import org.springframework.stereotype.Service;
@@ -26,15 +27,22 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public List<BlogDto> getAllBlogs() {
+
+        
+
         return blogRepository.findAll().stream().map(blog -> entityToDto(blog)).collect(Collectors.toList());
     }
 
     @Override
     public BlogDto getBlog(Long id) {
-         Optional<Blog> blog = blogRepository.findById(id);
-         if(blog.isPresent())
-             return entityToDto(blog.get());
-         else return null;
+         Blog blog = blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+         return entityToDto(blog);
+    }
+
+    @Override
+    public void deleteBlog(Long id) {
+        Blog blog = blogRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
+        blogRepository.delete(blog);
     }
 
     Blog dtoToEntity(BlogDto dto){

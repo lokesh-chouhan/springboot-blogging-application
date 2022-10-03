@@ -1,13 +1,13 @@
 package com.udemy.blogapplication.service;
 
-import com.udemy.blogapplication.payload.BlogDto;
+import com.udemy.blogapplication.dto.BlogDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BlogService {
 
     BlogDto createBlog(BlogDto blogDto);
     List<BlogDto> getAllBlogs();
     BlogDto getBlog(Long id);
+    void deleteBlog(Long id);
 }

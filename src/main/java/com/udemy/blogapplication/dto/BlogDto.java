@@ -1,4 +1,4 @@
-package com.udemy.blogapplication.payload;
+package com.udemy.blogapplication.dto;
 
 import lombok.Data;
 
